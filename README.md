@@ -1,2 +1,3 @@
-# buildcraft-github-8.2-test
-BuildCraft AI project source control for BuildCraft GitHub 8.2 Test
+# BuildCraft GitHub 8.2 Test
+
+Temporary verified project for the live GitHub source-control test.
