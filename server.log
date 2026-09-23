@@ -1,7 +1,0 @@
- INFO  Accepting connections at http://localhost:3000
- HTTP  9/23/2026 3:29:59 PM ::1 GET /
- HTTP  9/23/2026 3:29:59 PM ::1 Returned 200 in 24 ms
- HTTP  9/23/2026 3:30:01 PM ::1 GET /office
- HTTP  9/23/2026 3:30:01 PM ::1 Returned 200 in 2 ms
-
- INFO  Gracefully shutting down. Please wait...
