@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAAD Feed | Internal Office - Invoice & Driver Pay Application</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: white !important; color: black !important; }
+            .print-card { border: none !important; shadow: none !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-900 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Top Header -->
+    <header class="bg-slate-900 border-b border-slate-800 text-white sticky top-0 z-50 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+
+                <!-- Logo & Back to Site Link -->
+                <div class="flex items-center space-x-4">
+                    <a href="/" class="flex items-center space-x-3 group" title="Return to Main Website">
+                        <div class="bg-blue-700 p-2 rounded-lg border border-blue-500/40">
+                            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="32" height="32" rx="6" fill="#1E40AF" />
+                                <path d="M6 22L16 6L26 22H20L16 15L12 22H6Z" fill="#FFFFFF" />
+                            </svg>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-lg font-bold tracking-tight text-white leading-none">CAAD FEED <span class="text-sky-400 font-normal">OFFICE</span></span>
+                            <span class="text-[10px] text-slate-400 font-medium">Invoice &amp; Payroll Portal</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Navigation Tabs & Exit Button -->
+                <div class="flex items-center space-x-3">
+                    <button onclick="switchTab('invoices')" id="tabBtnInvoices" class="px-3.5 py-1.5 text-xs font-bold rounded-lg bg-blue-600 text-white shadow-sm transition-all">
+                        Invoicing
+                    </button>
+                    <button onclick="switchTab('payroll')" id="tabBtnPayroll" class="px-3.5 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition-all">
+                        Driver Pay Sheets
+                    </button>
+                    <a href="/" class="ml-2 inline-flex items-center px-3 py-1.5 text-xs font-semibold text-slate-300 bg-slate-800 hover:text-white rounded-lg border border-slate-700 transition-all">
+                        ← Back to Public Site
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- INVOICE SECTION -->
+        <div id="sectionInvoices" class="space-y-6">
+
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 no-print">
+                <div>
+                    <h1 class="text-2xl font-bold text-slate-900">Freight Billing &amp; Invoice Generator</h1>
+                    <p class="text-slate-500 text-xs mt-1">Record loads, tons, rates, and calculate total billing for clients.</p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="window.print()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-xl shadow transition-all">
+                        Print Invoice
+                    </button>
+                    <button onclick="resetInvoiceForm()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs rounded-xl transition-all">
+                        New Invoice
+                    </button>
+                </div>
+            </div>
+
+            <!-- Invoice Details Form & View -->
+            <div class="grid lg:grid-cols-12 gap-8">
+
+                <!-- Input Panel -->
+                <div class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4 no-print">
+                    <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider border-b border-slate-100 pb-2">Load Log Entry</h2>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Invoice #</label>
+                            <input type="text" id="invNum" value="CF-10482" class="w-full px-3 py-2 border rounded-lg text-xs bg-slate-50 focus:bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Invoice Date</label>
+                            <input type="date" id="invDate" class="w-full px-3 py-2 border rounded-lg text-xs bg-slate-50 focus:bg-white">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Bill To Client / Company</label>
+                        <input type="text" id="invClient" value="Delta Grain & Feed LLC" class="w-full px-3 py-2 border rounded-lg text-xs bg-slate-50 focus:bg-white">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Ticket #</label>
+                            <input type="text" id="ticketNum" placeholder="98231" class="w-full px-3 py-2 border rounded-lg text-xs bg-slate-50">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Commodity</label>
+                            <input type="text" id="itemDesc" placeholder="Corn / Feed Grain" class="w-full px-3 py-2 border rounded-lg text-xs bg-slate-50">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Origin / Destination</label>
+                            <input type="text" id="routeText" placeholder="Rayville, LA to Monroe, LA" class="w-full px-3 py-2 border rounded-lg text-xs bg-slate-50">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Driver / Unit #</label>
+                            <input type="text" id="driverUnit" placeholder="Unit 102" class="w-full px-3 py-2 border rounded-lg text-xs bg-slate-50">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Tons / Quantity</label>
+                            <input type="number" id="loadTons" step="0.01" value="25.4" oninput="calculateInvoice()" class="w-full px-3 py-2 border rounded-lg text-xs bg-slate-50 font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Rate ($/ton or flat)</label>
+                            <input type="number" id="loadRate" step="0.01" value="18.50" oninput="calculateInvoice()" class="w-full px-3 py-2 border rounded-lg text-xs bg-slate-50 font-bold">
+                        </div>
+                    </div>
+
+                    <button onclick="addLoadLine()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow transition-all">
+                        + Add Load Line Item
+                    </button>
+                </div>
+
+                <!-- Live Printable Invoice View -->
+                <div class="lg:col-span-7 bg-white p-8 rounded-2xl shadow-md border border-slate-200 print-card">
+                    <div class="flex justify-between items-start border-b border-slate-200 pb-6 mb-6">
+                        <div>
+                            <h2 class="text-2xl font-extrabold text-blue-900 tracking-tight">CAAD FEED</h2>
+                            <p class="text-xs font-medium text-slate-600 mt-1">Professional Hopper &amp; Belt Transportation</p>
+                            <p class="text-xs text-slate-500 mt-0.5">Contact: 318-381-2364 / 318-439-1137</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="inline-block px-3 py-1 bg-slate-100 text-slate-800 text-xs font-bold rounded-md">INVOICE</span>
+                            <div class="text-xs font-bold text-slate-700 mt-2">Invoice #: <span id="viewInvNum">CF-10482</span></div>
+                            <div class="text-xs text-slate-500">Date: <span id="viewInvDate"></span></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                        <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Billed To:</span>
+                        <div id="viewInvClient" class="text-sm font-bold text-slate-800 mt-0.5">Delta Grain & Feed LLC</div>
+                    </div>
+
+                    <!-- Loads Table -->
+                    <table class="w-full text-left text-xs mb-6">
+                        <thead>
+                            <tr class="border-b-2 border-slate-200 text-slate-500 uppercase tracking-wider text-[10px]">
+                                <th class="py-2">Ticket #</th>
+                                <th class="py-2">Description / Route</th>
+                                <th class="py-2 text-right">Tons</th>
+                                <th class="py-2 text-right">Rate</th>
+                                <th class="py-2 text-right">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="invoiceTableBody" class="divide-y divide-slate-100 text-slate-700 font-medium">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+
+                    <div class="flex justify-end border-t-2 border-slate-200 pt-4">
+                        <div class="w-48 space-y-1 text-right">
+                            <div class="flex justify-between text-xs text-slate-600">
+                                <span>Subtotal:</span>
+                                <span id="viewSubtotal" class="font-bold">$0.00</span>
+                            </div>
+                            <div class="flex justify-between text-sm font-extrabold text-blue-900 border-t border-slate-200 pt-2">
+                                <span>Total Due:</span>
+                                <span id="viewTotalDue">$0.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-12 text-center border-t border-slate-100 pt-4 text-[10px] text-slate-400">
+                        Thank you for your business! Please send payment to CAAD Feed.
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PAYROLL / DRIVER PAY SECTION -->
+        <div id="sectionPayroll" class="hidden space-y-6">
+
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 no-print">
+                <div>
+                    <h1 class="text-2xl font-bold text-slate-900">Driver Pay Sheets &amp; Settlement</h1>
+                    <p class="text-slate-500 text-xs mt-1">Calculate driver gross pay percentage, fuel advances, and net settlements.</p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="window.print()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-xl shadow transition-all">
+                        Print Driver Statement
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-8">
+
+                <!-- Calculator Inputs -->
+                <div class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4 no-print">
+                    <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider border-b border-slate-100 pb-2">Driver Settlement Calculator</h2>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Driver Name</label>
+                        <input type="text" id="payDriverName" value="John Driver" oninput="updatePayrollSheet()" class="w-full px-3 py-2 border rounded-lg text-xs bg-slate-50">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Pay Period End</label>
+                            <input type="date" id="payPeriodEnd" onchange="updatePayrollSheet()" class="w-full px-3 py-2 border rounded-lg text-xs bg-slate-50">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Driver Pay % Rate</label>
+                            <input type="number" id="payPercent" value="25" oninput="updatePayrollSheet()" class="w-full px-3 py-2 border rounded-lg text-xs bg-slate-50 font-bold">
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-blue-50 rounded-xl border border-blue-100 space-y-3">
+                        <span class="text-xs font-bold text-blue-900 uppercase tracking-wider">Gross Load Revenue</span>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Total Freight Revenue ($)</label>
+                                <input type="number" id="grossFreight" value="4800.00" oninput="updatePayrollSheet()" class="w-full px-3 py-2 border rounded-lg text-xs font-bold bg-white">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Driver Gross Earnings</label>
+                                <div id="calcDriverGross" class="px-3 py-2 bg-white rounded-lg border text-xs font-extrabold text-blue-800">$1,200.00</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Deductions & Advances -->
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+                        <span class="text-xs font-bold text-slate-800 uppercase tracking-wider">Deductions &amp; Advances</span>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Fuel Advances ($)</label>
+                                <input type="number" id="deductFuel" value="350.00" oninput="updatePayrollSheet()" class="w-full px-3 py-2 border rounded-lg text-xs bg-white font-semibold">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">Other Deductions ($)</label>
+                                <input type="number" id="deductOther" value="50.00" oninput="updatePayrollSheet()" class="w-full px-3 py-2 border rounded-lg text-xs bg-white font-semibold">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Printable Driver Pay Sheet -->
+                <div class="lg:col-span-7 bg-white p-8 rounded-2xl shadow-md border border-slate-200 print-card">
+                    <div class="flex justify-between items-start border-b border-slate-200 pb-6 mb-6">
+                        <div>
+                            <h2 class="text-2xl font-extrabold text-blue-900 tracking-tight">CAAD FEED</h2>
+                            <p class="text-xs font-medium text-slate-600 mt-1">Driver Settlement Statement</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-md">PAYROLL</span>
+                            <div class="text-xs text-slate-500 mt-2">Date: <span id="sheetDate"></span></div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mb-6 bg-slate-50 p-4 rounded-xl border border-slate-100 text-xs">
+                        <div>
+                            <span class="text-slate-400 uppercase text-[10px] font-bold">Driver Name:</span>
+                            <div id="viewDriverName" class="font-bold text-slate-900 text-sm">John Driver</div>
+                        </div>
+                        <div>
+                            <span class="text-slate-400 uppercase text-[10px] font-bold">Pay Rate:</span>
+                            <div id="viewDriverRate" class="font-bold text-slate-900 text-sm">25% of Freight</div>
+                        </div>
+                    </div>
+
+                    <!-- Earnings Summary Table -->
+                    <div class="space-y-3 mb-6">
+                        <div class="flex justify-between text-xs py-2 border-b border-slate-100">
+                            <span class="text-slate-600">Total Gross Load Freight Managed:</span>
+                            <span id="viewGrossFreight" class="font-bold text-slate-900">$4,800.00</span>
+                        </div>
+                        <div class="flex justify-between text-xs py-2 border-b border-slate-100 bg-blue-50/50 px-2 rounded">
+                            <span class="font-bold text-blue-900">Driver Calculated Gross Earnings:</span>
+                            <span id="viewDriverGross" class="font-bold text-blue-900">$1,200.00</span>
+                        </div>
+                        <div class="flex justify-between text-xs py-2 border-b border-slate-100 text-red-600">
+                            <span>Less: Fuel Advances:</span>
+                            <span id="viewFuelDeduct">-$350.00</span>
+                        </div>
+                        <div class="flex justify-between text-xs py-2 border-b border-slate-100 text-red-600">
+                            <span>Less: Other / Maintenance Deductions:</span>
+                            <span id="viewOtherDeduct">-$50.00</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-xl flex justify-between items-center">
+                        <span class="text-sm font-bold text-emerald-900">NET DRIVER PAY CHECK:</span>
+                        <span id="viewNetPay" class="text-2xl font-extrabold text-emerald-700">$800.00</span>
+                    </div>
+
+                    <div class="mt-12 text-center border-t border-slate-100 pt-4 text-[10px] text-slate-400">
+                        CAAD Feed Internal Payroll Record. Confidential document.
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+        // Set today's default dates
+        const todayStr = new Date().toISOString().split('T')[0];
+        document.getElementById('invDate').value = todayStr;
+        document.getElementById('viewInvDate').textContent = todayStr;
+        document.getElementById('sheetDate').textContent = todayStr;
+
+        let loadItems = [
+            { ticket: 'T-98101', desc: 'Corn / Rayville to Monroe', tons: 25.5, rate: 18.50, total: 471.75 },
+            { ticket: 'T-98102', desc: 'Grain / Delhi to Winnsboro', tons: 24.8, rate: 19.00, total: 471.20 }
+        ];
+
+        function renderInvoiceTable() {
+            const tbody = document.getElementById('invoiceTableBody');
+            tbody.innerHTML = '';
+            let subtotal = 0;
+
+            loadItems.forEach((item, index) => {
+                subtotal += item.total;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="py-2 font-bold">${item.ticket}</td>
+                    <td class="py-2">${item.desc}</td>
+                    <td class="py-2 text-right">${item.tons.toFixed(2)}</td>
+                    <td class="py-2 text-right">$${item.rate.toFixed(2)}</td>
+                    <td class="py-2 text-right font-bold">$${item.total.toFixed(2)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('viewSubtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('viewTotalDue').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('viewInvNum').textContent = document.getElementById('invNum').value || 'CF-10482';
+            document.getElementById('viewInvClient').textContent = document.getElementById('invClient').value || 'Client Name';
+        }
+
+        function addLoadLine() {
+            const ticket = document.getElementById('ticketNum').value || 'T-' + Math.floor(1000 + Math.random()*9000);
+            const desc = (document.getElementById('itemDesc').value || 'Commodity') + ' - ' + (document.getElementById('routeText').value || 'Local');
+            const tons = parseFloat(document.getElementById('loadTons').value) || 0;
+            const rate = parseFloat(document.getElementById('loadRate').value) || 0;
+            const total = tons * rate;
+
+            if (tons > 0 && rate > 0) {
+                loadItems.push({ ticket, desc, tons, rate, total });
+                renderInvoiceTable();
+            }
+        }
+
+        function resetInvoiceForm() {
+            loadItems = [];
+            renderInvoiceTable();
+        }
+
+        function updatePayrollSheet() {
+            const driver = document.getElementById('payDriverName').value || 'Driver Name';
+            const percent = parseFloat(document.getElementById('payPercent').value) || 0;
+            const grossFreight = parseFloat(document.getElementById('grossFreight').value) || 0;
+            const fuel = parseFloat(document.getElementById('deductFuel').value) || 0;
+            const other = parseFloat(document.getElementById('deductOther').value) || 0;
+
+            const driverGross = grossFreight * (percent / 100);
+            const netPay = driverGross - fuel - other;
+
+            document.getElementById('calcDriverGross').textContent = `$${driverGross.toFixed(2)}`;
+            document.getElementById('viewDriverName').textContent = driver;
+            document.getElementById('viewDriverRate').textContent = `${percent}% of Freight`;
+            document.getElementById('viewGrossFreight').textContent = `$${grossFreight.toFixed(2)}`;
+            document.getElementById('viewDriverGross').textContent = `$${driverGross.toFixed(2)}`;
+            document.getElementById('viewFuelDeduct').textContent = `-$${fuel.toFixed(2)}`;
+            document.getElementById('viewOtherDeduct').textContent = `-$${other.toFixed(2)}`;
+            document.getElementById('viewNetPay').textContent = `$${netPay.toFixed(2)}`;
+        }
+
+        function switchTab(tab) {
+            if (tab === 'invoices') {
+                document.getElementById('sectionInvoices').classList.remove('hidden');
+                document.getElementById('sectionPayroll').classList.add('hidden');
+                document.getElementById('tabBtnInvoices').className = "px-3.5 py-1.5 text-xs font-bold rounded-lg bg-blue-600 text-white shadow-sm transition-all";
+                document.getElementById('tabBtnPayroll').className = "px-3.5 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition-all";
+            } else {
+                document.getElementById('sectionInvoices').classList.add('hidden');
+                document.getElementById('sectionPayroll').classList.remove('hidden');
+                document.getElementById('tabBtnPayroll').className = "px-3.5 py-1.5 text-xs font-bold rounded-lg bg-blue-600 text-white shadow-sm transition-all";
+                document.getElementById('tabBtnInvoices').className = "px-3.5 py-1.5 text-xs font-bold rounded-lg bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition-all";
+            }
+        }
+
+        // Initialize view
+        renderInvoiceTable();
+        updatePayrollSheet();
+    </script>
+</body>
+</html>
