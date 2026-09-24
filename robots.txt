@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /office/
+Disallow: /office
+
+Sitemap: https://www.caadfeed.com/sitemap.xml
